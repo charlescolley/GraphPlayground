@@ -165,6 +165,7 @@ function io_buffer_footer()
     return String(take!(f))
 end
 
+#=
 #Example
 A = sprandn(10,10,0.2)
 w = Window()
@@ -176,3 +177,5 @@ graph = io_buffer_graph(A)
 footer = io_buffer_footer()
 # body!(w,header*graph*other_str*footer)
 body!(w,header*graph*footer)
+OB
+=#
