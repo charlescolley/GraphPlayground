@@ -102,9 +102,14 @@ function io_buffer_footer()
                   .on("drag", dragged)
                   .on("end", dragended))
     		.on("mouseover", handleMouseOver)
-    		.on("mouseout", handleMouseOut);
-
-
+        .on("mouseout", handleMouseOut)
+        .on("onclick",savecoords);
+    
+    function savecoords() {
+      // This still needs to be fixed. The goal is to store the coordinates of all nodes into positions.
+      var positions = node.forEach(function(d) { return [d.x, d.y]; });
+      Blink.msg("press", positions);
+    }
 
     function tickActions() {
         //update circle positions each tick of the simulation
@@ -147,8 +152,8 @@ function io_buffer_footer()
         // Use D3 to select element, change color and size
         d3.select(this).transition().attr("fill", "orange").attr("r", 10);
     	//d3.select(this).transition().attr("r", 10);
-    	//d.transition().attr("r",10);
-      }
+      //d.transition().attr("r",10);
+    }
 
     function handleMouseOut(d) {
         // Use D3 to select element, change color back to normal
@@ -157,11 +162,8 @@ function io_buffer_footer()
     	//d.transition().attr("r",5);
       }
       </script>
-      <button onclick='Blink.msg("press", 1)'>go</button>
+      <button onclick='savecoords()'>go</button>
     """
-    n = size(A,1)
-    @assert size(A,2) == n
-    ei,ej = findnz(A)[1:2]
     f = IOBuffer();
     write(f, footer)
     return String(take!(f))
@@ -170,6 +172,7 @@ end
 #Example
 A = sprandn(10,10,0.2)
 w = Window()
+opentools(w)
 loadjs!(w,"https://d3js.org/d3.v4.min.js")
 
 header = io_buffer_header()
@@ -178,3 +181,10 @@ graph = io_buffer_graph(A)
 footer = io_buffer_footer()
 # body!(w,header*graph*other_str*footer)
 body!(w,header*graph*footer)
+@js w x = 5
+handle(w, "press") do args...
+  x = args[1]
+  # Increment x
+  #@js_ w (x = $x + 1)  # Note the _asynchronous_ call.
+  println("New value: $x")
+end
