@@ -1,0 +1,11 @@
+name = "GraphPlayground"
+uuid = "2a6b0e95-b3d2-4a86-ba83-600127a2de2e"
+authors = ["ccolley"]
+version = "0.1.0"
+
+[deps]
+Blink = "ad839575-38b3-5650-b840-f874b8c74a25"
+SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
+
+
+

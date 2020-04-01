@@ -1,5 +1,3 @@
-using SparseArrays
-using Blink
 
 function io_buffer_header()
     header = """
@@ -169,6 +167,7 @@ function io_buffer_footer()
     return String(take!(f))
 end
 
+
 #Example
 A = sprandn(10,10,0.2)
 w = Window()
@@ -181,6 +180,7 @@ graph = io_buffer_graph(A)
 footer = io_buffer_footer()
 # body!(w,header*graph*other_str*footer)
 body!(w,header*graph*footer)
+
 @js w x = 5
 handle(w, "press") do args...
   x = args[1]
@@ -188,3 +188,4 @@ handle(w, "press") do args...
   #@js_ w (x = $x + 1)  # Note the _asynchronous_ call.
   println("New value: $x")
 end
+
