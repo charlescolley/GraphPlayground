@@ -105,7 +105,8 @@ function io_buffer_footer()
     
     function savecoords() {
       // This still needs to be fixed. The goal is to store the coordinates of all nodes into positions.
-      var positions = node.forEach(function(d) { return [d.x, d.y]; });
+      var positions = node.nodes().forEach(function(d) { return [d.x, d.y]; });
+      var positions = node.nodes()//, typeof node.data]
       Blink.msg("press", positions);
     }
 
@@ -181,11 +182,19 @@ footer = io_buffer_footer()
 # body!(w,header*graph*other_str*footer)
 body!(w,header*graph*footer)
 
+
+#TODO: global variable may be fragile, had type issues
+positions = [Array{Any,1}(undef,0)]
+
+
 @js w x = 5
 handle(w, "press") do args...
   x = args[1]
   # Increment x
   #@js_ w (x = $x + 1)  # Note the _asynchronous_ call.
-  println("New value: $x")
+#  println("New value: $x")
+#  push!(positions,args[1])
+  positions[1] = args[1]
+  locations = [(x["__data__"]["x"],x["__data__"]["y"]) for x in positions[1]]
+  println(locations)
 end
-
