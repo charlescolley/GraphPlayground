@@ -1,4 +1,4 @@
-function io_buffer_header(width::Int,height::Int)
+function io_buffer_header(width::Int=900,height::Int=600)
     header = """
     <style>
 
