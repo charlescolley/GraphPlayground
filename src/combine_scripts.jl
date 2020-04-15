@@ -12,13 +12,27 @@ function io_buffer_header(width::Int=900,height::Int=600)
       stroke-width: 1.5px;
     }
 
+
+
+
     </style>
     <svg width="$(width)" height="$(height)"></svg>
-    <script>
+    <script> 
+
+
+
+
+    var svg  = d3.select("svg"),
+      height = +svg.attr("height"),
+      width  = +svg.attr("width");
+
+
+
+    const g = svg.append("g");
+
+
     //create somewhere to put the force directed graph
-    var svg = d3.select("svg"),
-        width = +svg.attr("width"),
-        height = +svg.attr("height");
+
     """
     f = IOBuffer();
     write(f,header)
@@ -101,6 +115,17 @@ function io_buffer_footer()
     		.on("mouseover", handleMouseOver)
         .on("mouseout", handleMouseOut)
         .on("onclick",savecoords);
+
+     svg.call(d3.zoom()
+      .extent([[0, 0], [width, height]])
+      .scaleExtent([1, 8])
+      .on("zoom", zoomed));
+
+    function zoomed() {
+      link.attr("transform",d3.event.transform);
+      node.attr("transform", d3.event.transform);
+    }
+
     
     function savecoords() {
       // This still needs to be fixed. The goal is to store the coordinates of all nodes into positions.
@@ -174,7 +199,8 @@ function run_example()
     w = Window()
     opentools(w)
     loadjs!(w,"https://d3js.org/d3.v4.min.js")
-
+    loadjs!(w,"https://d3js.org/d3-zoom.v1.min.js")
+    
     header = io_buffer_header()
     graph = io_buffer_graph(A)
     # other_str = io_buffer_other_functionality(A)
