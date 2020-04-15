@@ -1,5 +1,4 @@
-
-function io_buffer_header()
+function io_buffer_header(width::Int,height::Int)
     header = """
     <style>
 
@@ -14,7 +13,7 @@ function io_buffer_header()
     }
 
     </style>
-    <svg width="960" height="600"></svg>
+    <svg width="$(width)" height="$(height)"></svg>
     <script>
     //create somewhere to put the force directed graph
     var svg = d3.select("svg"),
@@ -170,31 +169,33 @@ end
 
 
 #Example
-A = sprandn(10,10,0.2)
-w = Window()
-opentools(w)
-loadjs!(w,"https://d3js.org/d3.v4.min.js")
+function run_example()
+    A = sprandn(10,10,0.2)
+    w = Window()
+    opentools(w)
+    loadjs!(w,"https://d3js.org/d3.v4.min.js")
 
-header = io_buffer_header()
-graph = io_buffer_graph(A)
-# other_str = io_buffer_other_functionality(A)
-footer = io_buffer_footer()
-# body!(w,header*graph*other_str*footer)
-body!(w,header*graph*footer)
-
-
-#TODO: global variable may be fragile, had type issues
-positions = [Array{Any,1}(undef,0)]
+    header = io_buffer_header()
+    graph = io_buffer_graph(A)
+    # other_str = io_buffer_other_functionality(A)
+    footer = io_buffer_footer()
+    # body!(w,header*graph*other_str*footer)
+    body!(w,header*graph*footer)
 
 
-@js w x = 5
-handle(w, "press") do args...
-  x = args[1]
-  # Increment x
-  #@js_ w (x = $x + 1)  # Note the _asynchronous_ call.
-#  println("New value: $x")
-#  push!(positions,args[1])
-  positions[1] = args[1]
-  locations = [(x["__data__"]["x"],x["__data__"]["y"]) for x in positions[1]]
-  println(locations)
+    #TODO: global variable may be fragile, had type issues
+    positions = [Array{Any,1}(undef,0)]
+
+
+    @js w x = 5
+    handle(w, "press") do args...
+       x = args[1]
+       # Increment x
+       #@js_ w (x = $x + 1)  # Note the _asynchronous_ call.
+       #  println("New value: $x")
+       #  push!(positions,args[1])
+       positions[1] = args[1]
+       locations = [(x["__data__"]["x"],x["__data__"]["y"]) for x in positions[1]]
+       println(locations)
+    end
 end
