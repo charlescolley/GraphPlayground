@@ -190,6 +190,7 @@ function io_buffer_footer()
   function dragged(d) {
     d.fx = d3.event.x;
     d.fy = d3.event.y;
+    tooltip.html("(" + d.x.toFixed(2) + ", " + d.y.toFixed(2) + ")");
   }
   function dragended(d) {
     if (!d3.event.active) simulation.alphaTarget(0);
