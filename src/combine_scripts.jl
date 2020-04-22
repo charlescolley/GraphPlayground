@@ -14,6 +14,8 @@ function io_buffer_header(width::Int=900,height::Int=600)
 
     #GraphPlayground {
       z-index: -1;
+      width: 100%;
+      height:100%;
     }
 
     #interfaceBox {
@@ -25,6 +27,24 @@ function io_buffer_header(width::Int=900,height::Int=600)
       height: 100px;
       border: 3px solid #73AD21;  
     }
+
+
+    .svg-container {
+      display: inline-block;
+      position: relative;
+      width: 100%;
+      padding-bottom: 100%; /* aspect ratio */
+      vertical-align: top;
+      overflow: hidden;
+      }
+
+    .svg-content-responsive {
+      display: inline-block;
+      position: absolute;
+      top: 10px;
+      left: 0;
+     }
+
 
     .floating-box {
     float: left;
@@ -38,11 +58,18 @@ function io_buffer_header(width::Int=900,height::Int=600)
 
     <script> 
 
-    var svg  = d3.select("#GraphPlayground")
-		 .append("svg")
-		 .attr("width",100%)
-		 .attr("height",$(height));
-    console.log(typeof svg);
+ 
+    var svg = d3.select("#GraphPlayground")
+		.append("div")
+		 // Container class to make it responsive.
+   		.classed("svg-container", true) 
+   		.append("svg")
+   		// Responsive SVG needs these 2 attributes and no width and height attr.
+   		.attr("preserveAspectRatio", "xMinYMin meet")
+   		.attr("viewBox", "0 0 600 400") //TODO: understand viewBox 
+   		// Class to make it responsive.
+   		.classed("svg-content-responsive", true)
+    		 
 
       height = +svg.attr("height");
       width  = +svg.attr("width");
@@ -232,6 +259,13 @@ function run_example()
     # other_str = io_buffer_other_functionality(A)
     footer = io_buffer_footer()
     # body!(w,header*graph*other_str*footer)
+
+    open("test.html","w") do f
+      print(f,header*graph*footer)
+    end
+
+
+
     body!(w,header*graph*footer)
 
 
