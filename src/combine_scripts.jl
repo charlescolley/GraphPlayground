@@ -1,6 +1,16 @@
 function io_buffer_header(width::Int=900,height::Int=600)
   header = """
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Arvo" />
   <style>
+
+
+  #h1{
+    width:100%;
+    font-size:15px;
+    display: inline-block;
+    padding: 20px;
+  }
+
   .links line {
     stroke: #999;
     stroke-opacity: 0.6;
@@ -14,15 +24,26 @@ function io_buffer_header(width::Int=900,height::Int=600)
     width: 100%;
     height:100%;
   }
-  #interfaceBox {
+
+  .interfaceBox {
+
     position: absolute;
-    z-index: 0;
-    top: 40px;
+    z-index: 1;
+    top: 100px;
     right: 40px;
-    width: 50px;
-    height: 100px;
-    border: 3px solid #73AD21;  
-  }
+    
+    width: 150px;
+    height: 400px;
+    border: 3px solid #dbdbdb;  
+    opacity: .8;
+    background-color: #dbdbdbAA;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.4) -3px 3px 5px
+
+    text-align:center;
+    font-family:Arvo;
+    }
+
   .svg-container {
     display: inline-block;
     position: relative;
@@ -31,17 +52,14 @@ function io_buffer_header(width::Int=900,height::Int=600)
     vertical-align: top;
     overflow: hidden;
     }
+
   .svg-content-responsive {
-    display: inline-block;
+    display: block;
     position: absolute;
     top: 10px;
     left: 0;
    }
-  .floating-box {
-  float: left;
-  width: 150px;
-  height: 75px;
-  margin: 10px; 
+
   }
   </style>
   <script> 
@@ -217,12 +235,13 @@ function io_buffer_footer()
       }
     </script>
     <div id="GraphPlayground">
-         <div id="interfaceBox">
-     test
+         <div class="interfaceBox">
+	      <h1>GraphPlayground.jl</h1>
+	      <button onclick='savecoords()'>Get Coordinates</button>
          </div>
     </div>
     
-    <button onclick='savecoords()'>go</button>
+
   """
   f = IOBuffer();
   write(f, footer)
