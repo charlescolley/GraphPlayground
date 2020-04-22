@@ -12,24 +12,43 @@ function io_buffer_header(width::Int=900,height::Int=600)
       stroke-width: 1.5px;
     }
 
+    #GraphPlayground {
+      z-index: -1;
+    }
 
+    #interfaceBox {
+      position: absolute;
+      z-index: 0;
+      top: 40px;
+      right: 40px;
+      width: 50px;
+      height: 100px;
+      border: 3px solid #73AD21;  
+    }
+
+    .floating-box {
+    float: left;
+    width: 150px;
+    height: 75px;
+    margin: 10px; 
+    }
 
 
     </style>
-    <svg width="$(width)" height="$(height)"></svg>
+
     <script> 
 
+    var svg  = d3.select("#GraphPlayground")
+		 .append("svg")
+		 .attr("width",100%)
+		 .attr("height",$(height));
+    console.log(typeof svg);
 
-
-
-    var svg  = d3.select("svg"),
-      height = +svg.attr("height"),
+      height = +svg.attr("height");
       width  = +svg.attr("width");
 
 
-
     const g = svg.append("g");
-
 
     //create somewhere to put the force directed graph
 
@@ -185,6 +204,13 @@ function io_buffer_footer()
     	//d.transition().attr("r",5);
       }
       </script>
+
+      <div id="GraphPlayground">
+      	   <div id="interfaceBox">
+	   	test
+      	   </div>
+      </div>
+      
       <button onclick='savecoords()'>go</button>
     """
     f = IOBuffer();
